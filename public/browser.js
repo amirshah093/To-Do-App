@@ -1,5 +1,33 @@
  
- 
+const itemTemplate = (item) =>{
+    return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
+    <span class="item-text">${item.text}</span>
+    <div>
+      <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
+      <button data-id="${item._id}" class="delete-me btn btn-danger btn-sm">Delete</button>
+    </div>
+  </li>
+        `
+}
+    // page loader
+    let ourHtm = items.map((item) =>{
+        return itemTemplate(item)
+    }).join('')
+    document.getElementById('item-list').insertAdjacentHTML('beforeend', ourHtm)
+ //create 
+ let creatField = document.getElementById('create-field')
+ document.getElementById('create-form').addEventListener('submit', (props) =>{
+    props.preventDefault();
+    axios.post('/create-item', { text: creatField.value}).then((respnse)=>{
+        //create HTML
+        creatField.value = "";
+        creatField.focus();
+        document.getElementById('item-list').insertAdjacentHTML('beforeend', itemTemplate(respnse.data))
+
+    }).catch( () =>{
+        alert('somthin wont wrong')
+    })
+ })
  
  document.addEventListener("click", (props)=>{
 
